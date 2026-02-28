@@ -77,11 +77,10 @@ cp $script_dir/Mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
 dnf install mongodb-mongosh -y &>>$log_file
 VALIDATE $? "installing mongodb client"
 
-STATUS=$(mongosh --host mongodb.sabeera.online --eval 'db.getMongo().getDBNames().indexof("catalouge")')
-if [ $STATUS -lt 1 ]
-then
-    mongosh --host mongodb.sabeera.online </app/db/master-data.js &>>$log_file
-    VALIDATE $? "Loading data in to Mongodb"
+STATUS=$(mongosh --host mongodb.sabeera.online --quiet --eval 'db.getMongo().getDBNames().indexOf("catalouge")')
+if [ "${STATUS:-0}" -lt 1 ]; then
+    mongosh --host mongodb.sabeera.online </app/db/master-data.js &>>"$log_file"
+    VALIDATE $? "Loading data into MongoDB"
 else
-    eccho -e "data is already loaded $R skipping $N"
+    echo -e "data is already loaded $R skipping $N"
 fi
