@@ -73,7 +73,7 @@ systemctl enable catalogue &>>$log_file
 systemctl start catalogue &>>$log_file
 VALIDATE $? "starting catalouge"
 
-cp $script_dir/Mango.repo /etc/yum.repos.d/mongo.repo &>>$log_file
+cp $script_dir/Mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
 dnf install mongodb-mongosh -y &>>$log_file
 VALIDATE $? "installing mongodb client"
 
