@@ -50,7 +50,8 @@ else
     echo "system user already created"
 fi
 
-mkdir /app &>>$log_file
+
+mkdir -p /app &>>$log_file
 VALIDATE $? "creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$log_file
