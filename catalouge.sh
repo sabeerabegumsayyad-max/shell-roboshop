@@ -57,10 +57,10 @@ VALIDATE $? "creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$log_file
 VALIDATE $? "Downloading catalouge"
 
+rm -rf /app/*
 cd /app
-
 unzip /tmp/catalogue.zip &>>$log_file
-VALIDATE "unzippinng catalouge"
+VALIDATE $? "unzippinng catalouge"
 
 npm install &>>$log_file
 VALIDATE $? "node packages intallation"
