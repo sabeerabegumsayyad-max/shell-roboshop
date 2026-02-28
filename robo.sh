@@ -51,5 +51,6 @@ for instance in "${INSTANCES[@]}"; do
         }
       }]
     }
+EOF
 )"
 done
