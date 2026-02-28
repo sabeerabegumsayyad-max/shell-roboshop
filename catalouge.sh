@@ -78,7 +78,7 @@ dnf install mongodb-mongosh -y &>>$log_file
 VALIDATE $? "installing mongodb client"
 
 STATUS=$(mongosh --host mongodb.sabeera.online --eval 'db.getMongo().getDBNames().indexof("catalouge")')
-if [ $STATUS -ne 1 ]
+if [ $STATUS -lt 1 ]
 then
     mongosh --host mongodb.sabeera.online </app/db/master-data.js &>>$log_file
     VALIDATE $? "Loading data in to Mongodb"
