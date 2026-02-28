@@ -32,34 +32,34 @@ VALIDATE(){
     fi
 }
 
-dnf module disable nginx -y
+dnf module disable nginx -y &>>$log_file
 VALIDATE $? "disabling nginx"
 
-dnf module enable nginx:1.24 -y
+dnf module enable nginx:1.24 -y &>>$log_file
 VALIDATE $? "enabling nginx"
 
-dnf install nginx -y
+dnf install nginx -y &>>$log_file
 VALIDATE $? "installing nginx"
 
 systemctl enable nginx 
-systemctl start nginx 
+systemctl start nginx &>>$log_file
 VALIDATE $? "starting nginx"
 
-rm -rf /usr/share/nginx/html/* 
+rm -rf /usr/share/nginx/html/* &>>$log_file
 VALIDATE $? "removing existing data"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$log_file
 VALIDATE $? "downloading code"
 
 cd /usr/share/nginx/html
-unzip /tmp/frontend.zip
+unzip /tmp/frontend.zip &>>$log_file
 VALIDATE $? "unzipping code"
 #there will have some defaulut contetnt tyt that one we need to remove
-rm -rf /etc/nginx/nginx.conf
+rm -rf /etc/nginx/nginx.conf &>>$log_file
 VALIDATE $? "remove default nginx"
 
-cp $script_dir/nginx.conf /etc/nginx/nginx.conf
+cp $script_dir/nginx.conf /etc/nginx/nginx.conf &>>$log_file
 VALIDATE $? "copying nginx.conf"
 
-systemctl restart nginx 
+systemctl restart nginx  &>>$log_file
 VALIDATE $? "restarting nginx"
