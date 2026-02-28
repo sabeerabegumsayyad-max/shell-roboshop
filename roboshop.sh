@@ -10,7 +10,7 @@ for instance in "${INSTANCES[@]}"
 do
     Instance_ID=$(aws ec2 run-instances \
         --image-id ami-0220d79f3f480ecf5 \
-        --instance-type t2.micro \
+        --instance-type t3.micro \
         --security-group-ids sg-0dc0951f043f884d8 \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" \
         --query 'Instances[0].InstanceId' \
