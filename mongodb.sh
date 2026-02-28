@@ -15,7 +15,7 @@ mkdir -p $logs_folder
 echo -e "script starting executing at :$G $(date)$N"| tee -a $log_file
 if [ $userid -ne 0 ]
 then
-    echo "please run this script with root access ">>$log_file
+    echo "please run this script with root access "&>>$log_file
     exit 1
 else
     echo -e "running this script with $G root access $N" | tee -a $log_file
@@ -24,9 +24,9 @@ fi
 VALIDATE(){
     if [ $1 -eq 0 ] 
     then
-        echo -e " $2 is $G success $N">>$log_file
+        echo -e " $2 is $G success $N" | tee -a $log_file
     else
-        echo -e " $2 is $R failure $N">>$log_file
+        echo -e " $2 is $R failure $N" | tee -a $log_file
         exit 1
     fi
 }
@@ -34,17 +34,17 @@ VALIDATE(){
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copying mongo repo"
 
-dnf install mongodb-org -y 
+dnf install mongodb-org -y &>>$log_file
 VALIDATE $? "mongobd installation"
 
-systemctl enable mongod
+systemctl enable mongod &>>$log_file
 VALIDATE $? "mongodb enabling"
 
-systemctl start mongod
+systemctl start mongod &>>$log_file
 VALIDATE $? "mongodb starting"
 
-sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf
+sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>>$log_file
 VALIDATE $? "editing the mongodb conf for remote connectins"
 
-systemctl restart mongod
+systemctl restart mongod &>>$log_file
 VALIDATE $? "mongodb restarting"
