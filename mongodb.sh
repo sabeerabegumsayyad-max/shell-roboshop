@@ -31,7 +31,7 @@ VALIDATE(){
     fi
 }
 
-cp mongo.repo /etc/yum.repos.d/mongodb.repo
+cp /path/to/shell-roboshop/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copying mongo repo"
 
 dnf install mongodb-org -y &>>$log_file
