@@ -42,7 +42,7 @@ dnf install nginx -y &>>$log_file
 VALIDATE $? "installing nginx"
 
 systemctl enable nginx 
-systemctl start nginx &>>$log_file
+systemctl start nginx 
 VALIDATE $? "starting nginx"
 
 rm -rf /usr/share/nginx/html/* &>>$log_file
