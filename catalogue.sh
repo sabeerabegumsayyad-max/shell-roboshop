@@ -56,29 +56,29 @@ mkdir -p /app
 VALIDATE $? "creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$log_file
-VALIDATE $? "Downloading catalouge"
+VALIDATE $? "Downloading catalogue"
 
 rm -rf /app/*
 cd /app
 unzip /tmp/catalogue.zip &>>$log_file
-VALIDATE $? "unzippinng catalouge"
+VALIDATE $? "unzippinng catalogue"
 
 npm install &>>$log_file
 VALIDATE $? "node packages intallation"
 
-cp $script_dir/catalouge.service /etc/systemd/system/catalogue.service 
-VALIDATE $? "copying catalouge service"
+cp $script_dir/catalogue.service /etc/systemd/system/catalogue.service 
+VALIDATE $? "copying catalogue service"
 
 systemctl daemon-reload &>>$log_file
 systemctl enable catalogue &>>$log_file
 systemctl start catalogue &>>$log_file
-VALIDATE $? "starting catalouge"
+VALIDATE $? "starting catalogue"
 
 cp $script_dir/Mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
 dnf install mongodb-mongosh -y &>>$log_file
 VALIDATE $? "installing mongodb client"
 
-STATUS=$(mongosh --host mongodb.sabeera.online --quiet --eval 'db.getMongo().getDBNames().indexOf("catalouge")')
+STATUS=$(mongosh --host mongodb.sabeera.online --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
 if [ "${STATUS:-0}" -lt 0 ];
 then
     mongosh --host mongodb.sabeera.online </app/db/master-data.js &>>"$log_file"
