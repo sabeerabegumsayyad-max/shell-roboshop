@@ -70,8 +70,8 @@ cp $script_dir/user.service /etc/systemd/system/catalogue.service
 VALIDATE $? "copying user service"
 
 systemctl daemon-reload &>>$log_file
-systemctl enable catalogue &>>$log_file
-systemctl start catalogue &>>$log_file
+systemctl enable user &>>$log_file
+systemctl start user &>>$log_file
 VALIDATE $? "starting user"
 
 
