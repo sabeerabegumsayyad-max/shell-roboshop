@@ -36,7 +36,7 @@ do
     --hosted-zone-id $ZONE_ID \
     --change-batch '{
       "Changes": [{
-        "Action": "CREATE",
+        "Action": "UPSERT",
         "ResourceRecordSet": {
           "Name": "'"$record_id"'",
           "Type": "A",
