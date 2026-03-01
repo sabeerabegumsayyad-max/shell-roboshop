@@ -14,9 +14,10 @@ script_dir=$PWD
 
 mkdir -p $logs_folder
 echo -e "script starting executing at :$G $(date)$N"| tee -a $log_file
+
 if [ $userid -ne 0 ]
 then
-    echo "please run this script with root access "&>>$log_file
+    echo -e "$R please run this script with root access $N"&>>$log_file
     exit 1
 else
     echo -e "running this script with $G root access $N" | tee -a $log_file
@@ -51,7 +52,7 @@ else
 fi
 
 
-mkdir -p /app &>>$log_file
+mkdir -p /app 
 VALIDATE $? "creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$log_file
@@ -65,7 +66,7 @@ VALIDATE $? "unzippinng catalouge"
 npm install &>>$log_file
 VALIDATE $? "node packages intallation"
 
-cp $script_dir/catalouge.service /etc/systemd/system/catalogue.service &>>$log_file
+cp $script_dir/catalouge.service /etc/systemd/system/catalogue.service 
 VALIDATE $? "copying catalouge service"
 
 systemctl daemon-reload &>>$log_file
@@ -78,7 +79,8 @@ dnf install mongodb-mongosh -y &>>$log_file
 VALIDATE $? "installing mongodb client"
 
 STATUS=$(mongosh --host mongodb.sabeera.online --quiet --eval 'db.getMongo().getDBNames().indexOf("catalouge")')
-if [ "${STATUS:-0}" -lt 1 ]; then
+if [ "${STATUS:-0}" -lt 0 ];
+then
     mongosh --host mongodb.sabeera.online </app/db/master-data.js &>>"$log_file"
     VALIDATE $? "Loading data into MongoDB"
 else
