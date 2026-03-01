@@ -2,11 +2,11 @@
 
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-0dc0951f043f884d8"
-INSTANCES=("mongodb" "mysql" "rabitmq" "payment" "shipping" "cart" "user" "catalouge" "dispatch" "frontend")
+#INSTANCES=("mongodb" "mysql" "rabitmq" "payment" "shipping" "cart" "user" "catalouge" "dispatch" "frontend")
 ZONE_ID="Z05998412DIKACIE1APGQ"
 DOMAIN_NAME="sabeera.online"
 
-for instance in "${INSTANCES[@]}"
+for instance in "$@"
 do
     Instance_ID=$(aws ec2 run-instances \
         --image-id ami-0220d79f3f480ecf5 \
@@ -21,12 +21,14 @@ do
             --instance-ids "$Instance_ID" \
             --query 'Reservations[0].Instances[0].PrivateIpAddress' \
             --output text)
+            record_id="$instance.$DOMAIN_NAME"
     else
         IP=$(aws ec2 describe-instances \
             --instance-ids "$Instance_ID" \
             --query 'Reservations[0].Instances[0].PublicIpAddress' \
             --output text)
-    fi
+              record_id="$DOMAIN_NAME"
+     fi
     echo "$instance IP address: $IP"
 
 
@@ -36,7 +38,7 @@ do
       "Changes": [{
         "Action": "CREATE",
         "ResourceRecordSet": {
-          "Name": "'"$instance.$DOMAIN_NAME"'",
+          "Name": "'"$record_id"'",
           "Type": "A",
           "TTL": 1,
           "ResourceRecords": [{"Value": "'$IP'"}]
